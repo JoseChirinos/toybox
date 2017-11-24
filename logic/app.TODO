@@ -1,0 +1,63 @@
+Entidades:
+
+  ☐ User
+    - id
+    - name
+    - last_name
+    - email
+    - cellphone
+    - password
+    - picture_url
+    - type_user (admin/colaborador)
+    - date_init
+
+  ☐ Store (Tienda)
+    - id
+    - name
+    - nit
+    - address
+    - gps
+    - type_store (principal = 'p',sucursal = 's')
+    - date_init
+
+  ☐ Store_branch (Tiendas del Usuario)
+    - id
+    - id_store
+    - id_user
+
+  ☐ Warehouse (Almacen)
+    - id
+    - name
+    - address
+    - gps
+    - max-capacity
+    - min-capacity
+    - date_init
+
+  ☐ Warehouse_branch (Almacenes de Usuario)
+    - id
+    - id_user
+    - id_almacen
+
+  ☐ Product (Producto)
+    - id
+    - name
+    - quantity
+    - price
+    - picture_url
+    - barcode
+    - id_warehouse
+    - date_init
+
+  ☐ Order (Pedido)
+    - id
+    - id_warehouse
+    - status (entregado = 1, en espera = 0)
+    - date_delivery
+    - date_init
+
+  ☐ Order_Product
+    - id
+    - id_order
+    - id_product
+    - quatity
