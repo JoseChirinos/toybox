@@ -1,6 +1,6 @@
 # Toybox : app for you toy store
 
-[(https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/titulo.png)](https://nodei.co/npm/aja.png?downloads=true&stars=true)
+[(https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toy-box.png)](https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toy-box.png)
 
 ## Project feactures
 
