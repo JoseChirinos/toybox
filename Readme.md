@@ -1,10 +1,9 @@
-# Toybox : app for you toy store
-
-![toybox app for android](https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toy-box.png)
+![toybox app for android](https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toybox-app.png)
+# Toybox : simple and extreme app for you toy store
 
 ## Project feactures
 
-  1. Android Aplication
+  1. Android Application
   ```sh
     use clean architecture
   ```
