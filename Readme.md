@@ -1,12 +1,13 @@
 # Toybox : app for you toy store
 
-[![Npm Downloads](https://nodei.co/npm/aja.png?downloads=true&stars=true)](https://nodei.co/npm/aja.png?downloads=true&stars=true)
+[(https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/titulo.png)](https://nodei.co/npm/aja.png?downloads=true&stars=true)
 
 ## Project feactures
 
   1. Android Aplication
-  [https://nodejs.org/es/](https://nodejs.org/es/)
-
+  ```sh
+    use clean architecture
+  ```
   2. Webservice API REST
   ```sh
     slim/framework ~ 2 - PHP
