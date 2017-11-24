@@ -1,6 +1,6 @@
 # Toybox : app for you toy store
 
-[(https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toy-box.png)](https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toy-box.png)
+![toybox app for android](https://raw.githubusercontent.com/JoseChirinos/toybox/master/logic/title-toy-box.png)
 
 ## Project feactures
 
