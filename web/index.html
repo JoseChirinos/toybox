@@ -7,7 +7,7 @@
 <body>
 	<textarea id="capo" rows="10" cols="50"></textarea>
 
-	<button onclick="genWareHouse()">Generate User</button>
+	<button onclick="other()">Generate User</button>
 	
 	<br>
 	<textarea id="result" rows="10" cols="50"></textarea>
@@ -30,6 +30,26 @@
 			});
 			document.getElementById('result').value = r;
 		}
+		function genProduct(){
+			var json = eval(document.getElementById('capo').value);
+			var r = "";
+			json.forEach(function(i){
+				console.log(i);
+				r = r + "INSERT INTO product VALUES (null,\'"+i.name+"\',\'"+i.quantity+"\',\'"+i.price+"\',\'"+i.picture_url+"\',\'"+i.barcode+"\',\'"+i.id_warehouse+"\',\'"+i.date_init+"\');\n";
+			});
+			document.getElementById('result').value = r;	
+		}
+
+		function other(){
+			var json = eval(document.getElementById('capo').value);
+			var r = "";
+			json.forEach(function(i){
+				console.log(i);
+				r = r + "INSERT INTO materia_usuario VALUES (null,\'"+i.id_usuario+"\',\'"+i.materia+"\');\n";
+			});
+			document.getElementById('result').value = r;	
+		}
+
 	</script>
 </body>
 </html>

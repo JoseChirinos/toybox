@@ -16,6 +16,7 @@ Entidades:
     - name
     - nit
     - address
+    - type_money (dolares/bolivianos/etc)
     - gps
     - type_store (principal = '0',sucursal = '1')
     - date_init

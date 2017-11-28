@@ -6,13 +6,14 @@
 	$app = new \Slim\Slim();
 
 	/*Common*/
-	require "modelos/conexion.php";
-	require "modelos/security.php";
+	require "model/conexion.php";
+	require "model/security.php";
 	$fpdo = new FluentPDO(getConexion());
 
 	/* Models */
-	require "modelos/user.php";
-	require "modelos/warehouse.php";
+	require "model/user.php";
+	require "model/warehouse.php";
+	require "model/product.php";
 	/*
 	require "modelos/materia.php";
 	require "modelos/area.php";

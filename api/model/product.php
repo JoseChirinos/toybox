@@ -1,10 +1,10 @@
 <?php
 
-$app->get('/warehouse/all',function() use($app) {
+$app->get('/product/all',function() use($app) {
 	global $fpdo;
 	try {
 		
-		$result = $fpdo->from('warehouse')->execute();
+		$result = $fpdo->from('product')->execute();
 		$res = $result->fetchAll(PDO::FETCH_OBJ);
 		$newRes = array();
 		foreach ($res as $r) {
@@ -19,12 +19,12 @@ $app->get('/warehouse/all',function() use($app) {
 		echo 'Error: '.$e->getMessage();
 	}
 });
-$app->get('/warehouse/all/inverse',function() use($app) {
+$app->get('/product/all/inverse',function() use($app) {
 	global $fpdo;
 	try {
 		$conex = getConexion();
 
-		$result = $fpdo->from('warehouse')->orderBy('id DESC')->execute();
+		$result = $fpdo->from('product')->orderBy('id DESC')->execute();
 		$res = $result->fetchAll(PDO::FETCH_OBJ);
 		$newRes = array();
 		foreach ($res as $r) {
@@ -39,11 +39,22 @@ $app->get('/warehouse/all/inverse',function() use($app) {
 		echo 'Error: '.$e->getMessage();
 	}
 });
-$app->get('/warehouse/:lim/:offset',function($lim,$offset) use($app) {
+$app->get('/product/:id_warehouse/:limit/:offset',function($idwarehouse,$limit,$offset) use($app) {
 	global $fpdo;
+	$idd = desencriptar($idwarehouse);
 	try {
-		$result = $fpdo->from('warehouse')->limit($lim)->offset($offset)->orderBy('id DESC')->execute();
-		$res = $result->fetchAll(PDO::FETCH_OBJ);
+		$conex = getConexion();
+		$sql = 'CALL allProduct(?,?,?)';
+		$query = $conex->prepare($sql);
+		$query->execute(
+			array(
+				$idd,
+				$limit,
+				$offset
+			)
+		);
+		
+		$res = $query->fetchAll(PDO::FETCH_OBJ);
 		$newRes = array();
 		foreach ($res as $r) {
 			$r->id = encriptar($r->id);
@@ -57,70 +68,78 @@ $app->get('/warehouse/:lim/:offset',function($lim,$offset) use($app) {
 		echo 'Error: '.$e->getMessage();
 	}
 });
-$app->get('/warehouse/:id',function($id) use($app) {
+$app->get('/product/:id',function($id) use($app) {
 	global $fpdo;
 	$idd = desencriptar($id);
 	try {
-		$result = $fpdo->from('warehouse')->where('id',$idd)->execute();
+		$result = $fpdo->from('product')->where('id',$idd)->execute();
 		$result->execute();
 		$res = $result->fetchObject();
 		if($res==""){
 			$msg = "El elemento que busca fue eliminado o quizas no existe.";
-			$ok = false;
+			$status = false;
 		}
 		else{
 			$res->id = encriptar($res->id);
 			$msg = "Encontrado con éxito";
-			$ok = true;
+			$status = true;
 		}
 		$conex = null;
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('msg'=>$msg,'response'=>$res,'status'=> $ok)));
+		$app->response->body(json_encode(array('response'=>$res,'msg'=>$msg,'status'=> $status)));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
 });
 /* new */
-$app->post("/warehouse/new",function() use($app) {
+$app->post("/product/new",function() use($app) {
 	global $fpdo;
 	$objDatos = json_decode(file_get_contents("php://input"));
 
 	$name = $objDatos->name;
-	$address = $objDatos->address;
-	$gps = $objDatos->gps;
-	$max_capacity = $objDatos->max_capacity;
-	$min_capacity = $objDatos->min_capacity;
+	$quantity = $objDatos->quantity;
+	$price = $objDatos->price;
+	$picture_url = $objDatos->picture_url;
+	$barcode = $objDatos->barcode;
 	$vip = $objDatos->vip;
+	$userId = $objDatos->userid;
+	$warehouseId = $objDatos->warehouseid;
 
 	try {
-		$result = $fpdo->from('warehouse')->where('name',$name)->execute();
+		$result = $fpdo->from('product')->where('name',$name)->execute();
 		$res = $result->rowCount();	
 
 		if($res == 0 && $vip == getCode()){
-			$values = array( 'id'=>'null',
-						'name'=>$name,
-						'address'=>$address,
-						'gps'=>$gps,
-						'max_capacity'=>$max_capacity,
-						'min_capacity'=>$min_capacity,
-						'date_init'=>new FluentLiteral('NOW()'));
-			$result = $fpdo->insertInto('warehouse',$values)->execute();
-			$res = encriptar($result); /*obtenemos ID*/
-			$ok = true; // insertado con exito
-			$msg = "Almacen insertado con éxito";
+			$conex = getConexion();
+			$sql = 'CALL insertProduct(?,?,?,?,?,?,?)';
+			$query = $conex->prepare($sql);
+			$query->execute(
+				array(
+					$name,
+					$quantity,
+					$price,
+					$picture_url,
+					$barcode,
+					desencriptar($userId),
+					desencriptar($warehouseId)
+				)
+			);
+			$res = encriptar($query->fetchObject()->idInsertado);/*obtenemos ID*/
+			$status = true; // insertado con exito
+			$msg = "Producto insertado con éxito";
 		}
 		else{
 			if($vip != getCode()){
 				$res = 0;
-				$ok = false; // ya existe
+				$status = false; // ya existe
 				$msg = "Usted no tiene permisos para registrar";
 			}else{
 				$res = 0;
-				$ok = false; // ya existe
-				$msg = "El Almacen ya existe";
+				$status = false; // ya existe
+				$msg = "El Producto ya existe";
 			}
 		}
 		
@@ -128,45 +147,43 @@ $app->post("/warehouse/new",function() use($app) {
 		$app->response->headers->set("Content-type","application/json");
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array("id"=>$res,"status"=>$ok,"msg"=>$msg)));
+		$app->response->body(json_encode(array("id"=>$res,"msg"=>$msg,"status"=>$status)));
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
 	}
 });
 /* edit */
-$app->put("/warehouse/edit",function() use($app) {
+$app->post("/product/edit",function() use($app) {
 	global $fpdo;
 	$jsonmessage = \Slim\Slim::getInstance()->request();
   	$objDatos = json_decode($jsonmessage->getBody());
 
   	$idd = desencriptar($objDatos->id);
 	$name = $objDatos->name;
-	$address = $objDatos->address;
-	$gps = $objDatos->gps;
-	$max_capacity = $objDatos->max_capacity;
-	$min_capacity = $objDatos->min_capacity;
+	$quantity = $objDatos->quantity;
+	$picture_url = $objDatos->picture_url;
+	$barcode = $objDatos->barcode;
 	$vip = $objDatos->vip;
 	$res = 0;
 
 	try {
 		if($vip == getCode()){
-			$result = $fpdo->from('user')->where('name = ? AND id != ?',$name,$idd)->execute();
+			$result = $fpdo->from('product')->where('name = ? AND id != ?',$name,$idd)->execute();
 			$res = $result->rowCount();
 			if($res == 0){
 				$set = array(
 							'name'=>$name,
-							'address'=>$address,
-							'gps'=>$gps,
-							'max_capacity'=>$max_capacity,
-							'min_capacity'=>$min_capacity);
+							'quantity'=>$quantity,
+							'picture_url'=>$picture_url,
+							'barcode'=>$barcode);
 
-				$result = $fpdo->update('warehouse',$set,$idd)->execute();
-				$ok = true; // insertado con exito
+				$result = $fpdo->update('product',$set,$idd)->execute();
+				$status = true; // insertado con exito
 				$msg = "Modificado con éxito";
 			}
 			else{
-				$ok = false; // ya existe
-				$msg = "No se pudo actualizar porque el nombre de almacen ya existe";
+				$status = false; // ya existe
+				$msg = "No se pudo actualizar porque el nombre de producto ya existe";
 			}
 		}else{
 			$msg = "Usted no tiene permisos para registrar";
@@ -175,23 +192,35 @@ $app->put("/warehouse/edit",function() use($app) {
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array("status"=>$ok,"msg"=>$msg)));
+		$app->response->body(json_encode(array("msg"=>$msg,"status"=>$status)));
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
 	}	
 });
 
 /* delete */
-$app->delete('/warehouse/delete',function() use($app) {
+$app->post('/product/delete',function() use($app) {
 	global $fpdo;
+	$jsonmessage = \Slim\Slim::getInstance()->request();
+  	$objDatos = json_decode($jsonmessage->getBody());
+
+  	$vip = $objDatos->vip;
+	$idd = desencriptar($objDatos->id);
 	try {
-		$result = $fpdo->deleteFrom('warehouse', $id)->execute();
-		$conex = null;
+		if($vip == getCode()){
+			$result = $fpdo->deleteFrom('product')->where('id',$idd)->execute();
+			$msg = "Eliminado";
+			$status = true;
+		}
+		else{
+			$msg = "Usted no tiene permisos para eliminar";
+			$status = false;
+		}
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('status'=>true)));
+		$app->response->body(json_encode(array('msg'=>$msg,'$status'=>$status)));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
