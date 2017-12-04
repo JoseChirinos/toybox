@@ -89,7 +89,8 @@ $app->get('/product/:id',function($id) use($app) {
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('response'=>$res,'msg'=>$msg,'status'=> $status)));
+		/* objeto = objeto Product */
+		$app->response->body(json_encode(array('response'=>'','objeto'=>$res,'msg'=>$msg,'status'=> $status)));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
@@ -167,7 +168,71 @@ $app->post("/product/new",function() use($app) {
 		$app->response->headers->set("Content-type","application/json");
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array("id"=>$res,"msg"=>$msg,"status"=>$status)));
+		/* response  = id recien insertado */
+		$app->response->body(json_encode(array("response"=>$res,"msg"=>$msg,"status"=>$status)));
+
+	}catch(PDOException $e) {
+		echo "Error: ".$e->getMessage();
+	}
+});
+/* edit image */
+$app->post("/product/edit/picture",function() use($app) {
+	global $fpdo;
+	$objDatos = json_decode(file_get_contents("php://input"));
+
+	$image = $objDatos->image;
+	$productId = desencriptar($objDatos->id_product);
+	$vip = $objDatos->vip;
+
+	try {
+		$result = $fpdo->from('product')->where('id',$productId)->execute();
+		$res = $result->fetchObject();
+		if($res){
+			$picture_url = $res->picture_url;
+		}
+		else{
+			$picture_url = "";
+		}
+		
+		if($vip == getCode()){
+			/* upload image */
+			if(isset($image)){
+				$path = "upload/";
+				if (file_exists($path.$picture_url)){
+					unlink($path.$picture_url);
+				}
+				$decoded_image = base64_decode($image);
+				$hoy = getdate();
+				$texto = join('.',$hoy);
+				$picture_url = md5($texto.$picture_url).'.jpg';
+				$path = $path.$picture_url;
+				$file = fopen($path, 'wb');
+				$is_written = fwrite($file,$decoded_image);
+				fclose($file);
+				if($is_written > 0){
+					/* exito */
+					$set = array('picture_url'=>$picture_url);
+					$result = $fpdo->update('product',$set,$productId)->execute();
+					$msg = "Imagen cambiada con éxito";
+					$status = true; // insertado con exito
+				}
+				else{
+					$picture_url = $objDatos->picture_url;
+					$msg = "NO se pudo cambiar con éxito";
+					$status = false; // hubo algun error
+				}
+			}
+		}
+		else{
+			$status = false; // no hay permisos
+			$msg = "Usted no tiene permisos para registrar";
+		}
+		$conex = null;
+		$app->response->headers->set("Content-type","application/json");
+		$app->response->headers->set('Access-Control-Allow-Origin','*');
+		$app->response->status(200);
+		/* response  = picture_url recien insertado / en caso de error el mismo enviado */
+		$app->response->body(json_encode(array("response"=>$picture_url,"msg"=>$msg,"status"=>$status)));
 
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
@@ -213,7 +278,7 @@ $app->post("/product/edit",function() use($app) {
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array("msg"=>$msg,"status"=>$status)));
+		$app->response->body(json_encode(array("response"=>"","msg"=>$msg,"status"=>$status)));
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
 	}	
@@ -241,7 +306,7 @@ $app->post('/product/delete',function() use($app) {
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('msg'=>$msg,'$status'=>$status)));
+		$app->response->body(json_encode(array('response'=>'','msg'=>$msg,'$status'=>$status)));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}

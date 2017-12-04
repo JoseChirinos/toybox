@@ -1726,6 +1726,9 @@ p {
     .img-circles-alpha.img-2-left .img-2 {
       margin-left: 0; } }
 
+.img-modulos{
+    width: 60%!important;
+}
 .img-frame-normal {
   position: relative; }
   .img-frame-normal img {
@@ -3065,7 +3068,7 @@ a.feature-card {
       margin-bottom: 4px;
       -webkit-transition: 0.3s;
       transition: 0.3s;
-      background: #D1335B; }
+      background: #3f39d4; }
       @media (min-width: 768px) {
         .menu-icon .bars .bar1,
         .menu-icon .bars .bar2,
@@ -5057,3 +5060,13 @@ strong {
 /* ipad and tablet */
 /* ipad and tablet */
 /* phone */
+.home-title{
+  display: none;
+  width: 200px;
+  height: 258px;
+}
+@media (max-width: 574px){
+  .home-title{
+    display: block;
+  }
+}

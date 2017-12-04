@@ -16,8 +16,8 @@
   background-size: contain; }
 
 .landing-cta {
-  background: url("../img/bg-wave-sym.png"), -webkit-gradient(linear, right top, left top, from(#3f4b62), to(#935f86));
-  background: url("../img/bg-wave-sym.png"), linear-gradient(to left, #3f4b62, #935f86);
+  background: url("../img/bg-wave-sym.png"), -webkit-gradient(linear, right top, left top, from(#28292c), to(#4a2b8f));
+  background: url("../img/bg-wave-sym.png"), linear-gradient(to left, #28292c, #4a2b8f);
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: contain; }

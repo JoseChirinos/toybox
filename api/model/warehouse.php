@@ -89,7 +89,8 @@ $app->get('/warehouse/:id',function($id) use($app) {
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array('response'=>$res,'msg'=>$msg,'status'=> $status)));
+		/* objeto = ObjetoWarehouse */
+		$app->response->body(json_encode(array('response'=>'','objeto'=>$res,'msg'=>$msg,'status'=> $status)));
 	}catch(PDOException $e) {
 		echo 'Error: '.$e->getMessage();
 	}
@@ -145,7 +146,8 @@ $app->post("/warehouse/new",function() use($app) {
 		$app->response->headers->set("Content-type","application/json");
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
-		$app->response->body(json_encode(array("id"=>$res,"msg"=>$msg,"status"=>$status)));
+		/* response = id del recien insertado */
+		$app->response->body(json_encode(array("response"=>$res,"msg"=>$msg,"status"=>$status)));
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
 	}
@@ -192,7 +194,7 @@ $app->post("/warehouse/edit",function() use($app) {
 
 		$app->response->headers->set('Content-type','application/json');
 		$app->response->status(200);
-		$app->response->body(json_encode(array("msg"=>$msg,"status"=>$status)));
+		$app->response->body(json_encode(array("response"=>"","msg"=>$msg,"status"=>$status)));
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
 	}	
