@@ -3,4 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- startup strings -->
+    <string name="startup_subtitle">CONTROL DE ALMACENES\nPARA TIENDA DE JUGUETES</string>
+    <string name="startup_btn_signin">INGRESAR</string>
+    <string name="startup_btn_signup">REGISTRARME</string>
 </resources>

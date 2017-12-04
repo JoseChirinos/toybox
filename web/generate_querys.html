@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Generate consulta</title>
+</head>
+<body>
+	<textarea id="capo" rows="10" cols="50"></textarea>
+
+	<button onclick="other()">Generate User</button>
+	
+	<br>
+	<textarea id="result" rows="10" cols="50"></textarea>
+
+	<script type="text/javascript">
+		function genUser(){
+			var json = eval(document.getElementById('capo').value);
+			var r = "";
+			json.forEach(function(i){
+				r = r + "INSERT INTO user VALUES (null,\'"+i.name+"\',\'"+i.last_name+"\',\'"+i.email+"\',\'"+i.cellphone+"\',\'"+i.password+"\',\'"+i.picture_url+"\',"+i.type_user+",\'"+i.date_init+"\');\n";
+			});
+			document.getElementById('result').value = r;
+		}
+
+		function genWareHouse(){
+			var json = eval(document.getElementById('capo').value);
+			var r = "";
+			json.forEach(function(i){
+				r = r + "INSERT INTO warehouse VALUES (null,\'"+i.name+"\',\'"+i.address+"\',\'"+i.gps+"\',\'"+i.max_capacity+"\',\'"+i.min_capacity+"\',\'"+i.date_init+"\');\n";
+			});
+			document.getElementById('result').value = r;
+		}
+		function genProduct(){
+			var json = eval(document.getElementById('capo').value);
+			var r = "";
+			json.forEach(function(i){
+				console.log(i);
+				r = r + "INSERT INTO product VALUES (null,\'"+i.name+"\',\'"+i.quantity+"\',\'"+i.price+"\',\'"+i.picture_url+"\',\'"+i.barcode+"\',\'"+i.id_warehouse+"\',\'"+i.date_init+"\');\n";
+			});
+			document.getElementById('result').value = r;	
+		}
+
+		function other(){
+			var json = eval(document.getElementById('capo').value);
+			var r = "";
+			json.forEach(function(i){
+				console.log(i);
+				r = r + "INSERT INTO materia_usuario VALUES (null,\'"+i.id_usuario+"\',\'"+i.materia+"\');\n";
+			});
+			document.getElementById('result').value = r;	
+		}
+
+	</script>
+</body>
+</html>

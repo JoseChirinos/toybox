@@ -99,20 +99,41 @@ $app->post("/product/new",function() use($app) {
 	global $fpdo;
 	$objDatos = json_decode(file_get_contents("php://input"));
 
+	$image = $objDatos->image;
 	$name = $objDatos->name;
 	$quantity = $objDatos->quantity;
 	$price = $objDatos->price;
-	$picture_url = $objDatos->picture_url;
 	$barcode = $objDatos->barcode;
 	$vip = $objDatos->vip;
-	$userId = $objDatos->userid;
-	$warehouseId = $objDatos->warehouseid;
+	$userId = $objDatos->id_user;
+	$warehouseId = $objDatos->id_warehouse;
+
+	$picture_url = "default.jpg";
 
 	try {
 		$result = $fpdo->from('product')->where('name',$name)->execute();
 		$res = $result->rowCount();	
 
 		if($res == 0 && $vip == getCode()){
+
+			/* upload image */
+			if(isset($image)){
+				$decoded_image = base64_decode($image);
+				$path = "upload/";
+				$hoy = getdate();
+				$texto = join('.',$hoy);
+				$picture_url = md5($texto.$name).'.jpg';
+				$path = $path.$picture_url;
+				$file = fopen($path, 'wb');
+				$is_written = fwrite($file,$decoded_image);
+				fclose($file);
+				if($is_written > 0){
+					echo 'se subio con exito';
+				}
+				else{
+					echo 'hubo un error';
+				}
+			}
 			$conex = getConexion();
 			$sql = 'CALL insertProduct(?,?,?,?,?,?,?)';
 			$query = $conex->prepare($sql);
@@ -127,7 +148,7 @@ $app->post("/product/new",function() use($app) {
 					desencriptar($warehouseId)
 				)
 			);
-			$res = encriptar($query->fetchObject()->idInsertado);/*obtenemos ID*/
+			$res = encriptar($query->fetchObject()->idInsertado);//obtenemos ID
 			$status = true; // insertado con exito
 			$msg = "Producto insertado con éxito";
 		}
@@ -142,12 +163,12 @@ $app->post("/product/new",function() use($app) {
 				$msg = "El Producto ya existe";
 			}
 		}
-		
 		$conex = null;
 		$app->response->headers->set("Content-type","application/json");
 		$app->response->headers->set('Access-Control-Allow-Origin','*');
 		$app->response->status(200);
 		$app->response->body(json_encode(array("id"=>$res,"msg"=>$msg,"status"=>$status)));
+
 	}catch(PDOException $e) {
 		echo "Error: ".$e->getMessage();
 	}

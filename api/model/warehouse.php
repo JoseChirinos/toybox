@@ -105,7 +105,7 @@ $app->post("/warehouse/new",function() use($app) {
 	$max_capacity = $objDatos->max_capacity;
 	$min_capacity = $objDatos->min_capacity;
 	$vip = $objDatos->vip;
-	$userId = $objDatos->userid;
+	$userId = $objDatos->id_user;
 
 	try {
 		$result = $fpdo->from('warehouse')->where('name',$name)->execute();

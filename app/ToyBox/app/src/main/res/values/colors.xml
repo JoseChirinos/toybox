@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!-- startup colors -->
+    <color name="startup_background">#2d305a</color>
+    <color name="startup_text">#ffffff</color>
 </resources>

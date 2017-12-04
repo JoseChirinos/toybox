@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/startup_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp">
+
+            <ImageView
+                android:id="@+id/startup_image_title"
+                android:layout_width="250dp"
+                android:layout_height="124dp"
+                android:background="@drawable/title"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                 />
+
+            <ImageView
+                android:id="@+id/startup_image_toy"
+                android:layout_below="@+id/startup_image_title"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:background="@drawable/toys"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-20dp"/>
+            <TextView
+                android:id="@+id/startup_text"
+                android:layout_below="@+id/startup_image_toy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/startup_text"
+                android:textAlignment="center"
+                android:text="@string/startup_subtitle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"/>
+            <Button
+                android:id="@+id/startup_btn_singin"
+                android:layout_below="@+id/startup_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/startup_btn_signin"
+                android:background="@drawable/startup_btn_signin"
+                android:textColor="@color/startup_text"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"/>
+            <Button
+                android:id="@+id/startup_btn_singup"
+                android:layout_below="@+id/startup_btn_singin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/startup_btn_signup"
+                android:background="@drawable/startup_btn_signup"
+                android:textColor="@color/startup_text"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"/>
+        </RelativeLayout>
+</ScrollView>
+
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/startup_background">
+
+    <ImageView
+        android:id="@+id/startup_title_bom"
+        android:layout_width="250dp"
+        android:layout_height="124dp"
+        android:scaleY="0.8"
+        android:scaleX="0.8"
+        android:background="@drawable/title"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-20dp"/>
+
+</RelativeLayout>
